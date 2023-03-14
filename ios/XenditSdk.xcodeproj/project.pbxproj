@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5E555C0D2413F4C50049A1A2 /* XenditSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* XenditSdk.m */; };
-		F4FF95D7245B92E800C19C63 /*  XenditSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /*  XenditSdk.swift */; };
+		F4FF95D7245B92E800C19C63 /* XenditSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* XenditSdk.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +48,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		414C914D29C01A05008A5778 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
@@ -56,6 +62,7 @@
 				B3E7B5891CC2AC0600A0062D /* XenditSdk.m */,
 				F4FF95D5245B92E700C19C63 /* XenditSdk-Bridging-Header.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				414C914D29C01A05008A5778 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,7 +124,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4FF95D7245B92E800C19C63 /* XenditSdk.swift in Sources */,
-				B3E7B58A1CC2AC0600A0062D /* XenditSdk.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

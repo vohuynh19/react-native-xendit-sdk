@@ -1,25 +1,64 @@
 package com.xenditsdk
 
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.*
+import com.xendit.AuthenticationCallback
+import com.xendit.Models.*
+import com.xendit.TokenCallback
+import com.xendit.Xendit
 
-class XenditSdkModule(reactContext: ReactApplicationContext) :
-  ReactContextBaseJavaModule(reactContext) {
+class XenditSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
-  override fun getName(): String {
-    return NAME
-  }
+    private var xendit: Xendit? = null;
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  @ReactMethod
-  fun multiply(a: Double, b: Double, promise: Promise) {
-    promise.resolve(a * b)
-  }
+    override fun getName(): String {
+        return "XenditSdk"
+    }
 
-  companion object {
-    const val NAME = "XenditSdk"
-  }
+    @ReactMethod
+    fun initialize(publicKey: String) {
+      xendit = Xendit(reactApplicationContext, publicKey, currentActivity);
+    }
+
+    @ReactMethod
+    fun createSingleUseToken(cardParams: ReadableMap, amount: Double, shouldAuthenticate: Boolean, onBehalfOf: String?, promise: Promise) {
+      val card = mapToCard(cardParams)
+
+      xendit?.createSingleUseToken(card, amount.toInt(), shouldAuthenticate, onBehalfOf, object : TokenCallback() {
+        override fun onSuccess(token: Token?) {
+          promise.resolve(mapFromToken(token))
+        }
+
+        override fun onError(error: XenditError?) {
+          promise.reject(error?.errorCode, error?.errorMessage)
+        }
+      })
+    }
+
+    @ReactMethod
+    fun createMultipleUseToken(cardParams: ReadableMap, amount: Double, onBehalfOf: String?, promise: Promise) {
+      val card = mapToCard(cardParams)
+
+      xendit?.createMultipleUseToken(card, onBehalfOf, object : TokenCallback() {
+        override fun onSuccess(token: Token?) {
+          promise.resolve(mapFromToken(token))
+        }
+
+        override fun onError(error: XenditError?) {
+          promise.reject(error?.errorCode, error?.errorMessage)
+        }
+      })
+    }
+
+    @ReactMethod
+    fun createAuthentication(tokenId: String, amount: Double, onBehalfOf: String?, promise: Promise) {
+      xendit?.createAuthentication(tokenId, amount.toInt(), onBehalfOf, object : AuthenticationCallback() {
+        override fun onSuccess(authentication: Authentication?) {
+          promise.resolve(mapFromAuthentication(authentication))
+        }
+
+        override fun onError(error: XenditError?) {
+          promise.reject(error?.errorCode, error?.errorMessage)
+        }
+      })
+    }
 }
